@@ -5,7 +5,7 @@
   $.fn.anchorlink = function(options) {
     var self = this,
         $body_html = $('html, body'),
-        scroll_event_stopper = "scroll.anchorlink mousedown.anchorlink wheel.anchorlink DOMMouseScroll.anchorlink mousewheel.anchorlink keyup.anchorlink touchmove.anchorlink",
+        scroll_stop_event = "scroll.anchorlink mousedown.anchorlink wheel.anchorlink DOMMouseScroll.anchorlink mousewheel.anchorlink keyup.anchorlink touchmove.anchorlink",
         settings = $.extend({
         // These are the defaults.
         timer : 500,
@@ -75,7 +75,7 @@
 
         settings.before_scroll.call(this);
 
-        $body_html.on(scroll_event_stopper, function(){
+        $body_html.on(scroll_stop_event, function(){
           $body_html.stop(); // prevent jittering scroll when scrolling manually during animation
         });
 
@@ -86,7 +86,7 @@
             settings.after_scroll.call(this);
           });
 
-        $body_html.off(scroll_event_stopper);
+        $body_html.off(scroll_stop_event);
 
         $target.focus();
       }
