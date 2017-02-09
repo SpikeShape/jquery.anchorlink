@@ -1,8 +1,11 @@
+// ruediger@webit.de
+
 (function( $ ) {
 
   $.fn.anchorlink = function(options) {
     var self = this,
         $body_html = $('html, body'),
+        scroll_event_stopper = "scroll.anchorlink mousedown.anchorlink wheel.anchorlink DOMMouseScroll.anchorlink mousewheel.anchorlink keyup.anchorlink touchmove.anchorlink",
         settings = $.extend({
         // These are the defaults.
         timer : 500,
@@ -10,8 +13,12 @@
         offset_top : 0,
         write_history_entry : true,
         destination_class : 'js-focus',
-        before_scroll: function() {},
-        after_scroll : function() {}
+        before_scroll: function() {
+          // alert('before scroll!');
+        },
+        after_scroll : function() {
+          // alert('after scroll!');
+        }
       }, options );
 
     /**
@@ -33,14 +40,16 @@
         _scrollTo($(this).attr('href'));
       });
 
-      $body_html.on("scroll mousedown wheel DOMMouseScroll mousewheel keyup touchmove", function(){
-        $body_html.stop();
-      });
-
       if (settings.scroll_to_hash_on_load && window.location.hash) {
+        window.scrollTo(0, 0); // execute it straight away
+        setTimeout(function() {
+          window.scrollTo(0, 0); // run it a bit later also for browser compatibility
+        }, 1);
+
         _scrollTo(window.location.hash, false);
       }
     }
+
     /**
      * Scrolls to the specified element.
      * @function _scrollTo
@@ -49,8 +58,6 @@
     function _scrollTo(target, history_entry) {
       var
       $target = $(target);
-
-      console.log($target);
 
       history_entry = (typeof history_entry === 'undefined') ? true : history_entry;
 
@@ -66,16 +73,30 @@
           history.pushState({}, "", target);
         }
 
-        settings.before_scroll.call();
+        settings.before_scroll.call(this);
+
+        $body_html.on(scroll_event_stopper, function(){
+          $body_html.stop(); // prevent jittering scroll when scrolling manually during animation
+        });
 
         $body_html.stop(false, false).animate({
           scrollTop: ($target.offset().top + settings.offset_top)
-        }, settings.timer, settings.after_scroll);
+        }, settings.timer)
+          .promise().then(function() {
+            settings.after_scroll.call(this);
+          });
+
+        $body_html.off(scroll_event_stopper);
 
         $target.focus();
       }
     }
 
+    /**
+     * Remove tabindex and class for js focus
+     * @function _removeJSAttributes
+     * @private
+     */
     function _removeJSAttributes($target) {
       $target.removeAttr('tabindex').removeClass(settings.destination_class).off('blur.anchorlink');
     }
