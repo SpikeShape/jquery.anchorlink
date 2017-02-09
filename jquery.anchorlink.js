@@ -44,6 +44,14 @@
 
         _scrollTo(window.location.hash, false);
       }
+
+      if (write_history_entry) {
+        $(window).on('popstate.anchorlink', function() {
+          if (history.state !== null) {
+            _scrollTo(history.state, false);
+          }
+        });
+      }
     }
 
     /**
@@ -66,7 +74,7 @@
         }
 
         if (settings.write_history_entry && history_entry && typeof history.pushState === 'function') {
-          history.pushState({}, "", target);
+          history.pushState(target, "", target);
         }
 
         settings.before_scroll.call(this);
