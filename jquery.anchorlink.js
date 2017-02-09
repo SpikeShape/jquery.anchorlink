@@ -5,7 +5,7 @@
   $.fn.anchorlink = function(options) {
     var self = this,
         $body_html = $('html, body'),
-        scroll_stop_event = "scroll.anchorlink mousedown.anchorlink wheel.anchorlink DOMMouseScroll.anchorlink mousewheel.anchorlink keyup.anchorlink touchmove.anchorlink",
+        scroll_stop_event = 'scroll.anchorlink mousedown.anchorlink wheel.anchorlink DOMMouseScroll.anchorlink mousewheel.anchorlink keyup.anchorlink touchmove.anchorlink',
         settings = $.extend({
         // These are the defaults.
         timer : 500,
@@ -13,12 +13,8 @@
         offset_top : 0,
         write_history_entry : true,
         destination_class : 'js-focus',
-        before_scroll: function() {
-          // alert('before scroll!');
-        },
-        after_scroll : function() {
-          // alert('after scroll!');
-        }
+        before_scroll: function() {},
+        after_scroll : function() {}
       }, options );
 
     /**
@@ -84,9 +80,8 @@
         }, settings.timer)
           .promise().then(function() {
             settings.after_scroll.call(this);
+            $body_html.off(scroll_stop_event);
           });
-
-        $body_html.off(scroll_stop_event);
 
         $target.focus();
       }
