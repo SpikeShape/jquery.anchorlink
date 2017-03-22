@@ -32,7 +32,7 @@
      */
     function _bindEvents() {
       self.on('click.anchorlink', function() {
-        _scrollTo(self.attr('href'));
+        _scrollTo($(this).attr('href'));
       });
 
       if (settings.scrollOnLoad && window.location.hash) {
