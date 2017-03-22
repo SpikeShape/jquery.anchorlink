@@ -9,11 +9,11 @@
         settings = $.extend({
         // These are the defaults.
         timer : 500,
-        scroll_to_hash_on_load : true,
-        offset_top : 0,
-        destination_class : 'js-focus',
-        before_scroll: function() {},
-        after_scroll : function() {}
+        scrollOnLoad : true,
+        offsetTop : 0,
+        focusClass : 'js-focus',
+        beforeScroll: function() {},
+        afterScroll : function() {}
       }, options );
 
     /**
@@ -35,7 +35,7 @@
         _scrollTo(self.attr('href'));
       });
 
-      if (settings.scroll_to_hash_on_load && window.location.hash) {
+      if (settings.scrollOnLoad && window.location.hash) {
         window.scrollTo(0, 0); // execute it straight away
         setTimeout(function() {
           window.scrollTo(0, 0); // run it a bit later also for browser compatibility
@@ -60,7 +60,7 @@
         if (!$target.get(0).hasAttribute('tabindex')) {
           $target
             .attr('tabindex', '-1')
-            .addClass(settings.destination_class)
+            .addClass(settings.focusClass)
             .on('blur.anchorlink', _removeJSAttributes($target));
         }
 
@@ -68,17 +68,17 @@
           window.location.hash = target;
         }
 
-        settings.before_scroll.call(this);
+        settings.beforeScroll.call(this);
 
         $body_html.on(scroll_stop_event, function(){
           $body_html.stop(); // prevent jittering scroll when scrolling manually during animation
         });
 
         $body_html.stop(false, false).animate({
-          scrollTop: ($target.offset().top + settings.offset_top)
+          scrollTop: ($target.offset().top + settings.offsetTop)
         }, settings.timer)
           .promise().then(function() {
-            settings.after_scroll.call(this);
+            settings.afterScroll.call(this);
             $body_html.off(scroll_stop_event);
           });
 
@@ -92,7 +92,7 @@
      * @private
      */
     function _removeJSAttributes($target) {
-      $target.removeAttr('tabindex').removeClass(settings.destination_class).off('blur.anchorlink');
+      $target.removeAttr('tabindex').removeClass(settings.focusClass).off('blur.anchorlink');
     }
 
     if (this.length) {
