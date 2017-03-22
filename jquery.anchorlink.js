@@ -22,17 +22,17 @@
      * @public
      */
     function init() {
-      _bindEvents();
+      bindEvents();
     }
 
     /**
      * Binds all events to jQuery DOM objects.
-     * @function _bindEvents
+     * @function bindEvents
      * @private
      */
-    function _bindEvents() {
+    function bindEvents() {
       self.on('click.anchorlink', function() {
-        _scrollTo($(this).attr('href'));
+        scrollTo($(this).attr('href'));
       });
 
       if (settings.scrollOnLoad && window.location.hash) {
@@ -41,16 +41,16 @@
           window.scrollTo(0, 0); // run it a bit later also for browser compatibility
         }, 1);
 
-        _scrollTo(window.location.hash, false);
+        scrollTo(window.location.hash, false);
       }
     }
 
     /**
      * Scrolls to the specified element.
-     * @function _scrollTo
+     * @function scrollTo
      * @private
      */
-    function _scrollTo(target, change_url_hash) {
+    function scrollTo(target, change_url_hash) {
       var
       $target = $(target);
 
