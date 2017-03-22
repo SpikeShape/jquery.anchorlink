@@ -32,7 +32,7 @@
      */
     function _bindEvents() {
       self.on('click.anchorlink', function() {
-        _scrollTo($(this).attr('href'));
+        _scrollTo(self.attr('href'));
       });
 
       if (settings.scroll_to_hash_on_load && window.location.hash) {
@@ -50,11 +50,11 @@
      * @function _scrollTo
      * @private
      */
-    function _scrollTo(target, history_entry) {
+    function _scrollTo(target, change_url_hash) {
       var
       $target = $(target);
 
-      history_entry = (typeof history_entry === 'undefined') ? true : history_entry;
+      change_url_hash = (typeof change_url_hash === 'undefined') ? true : change_url_hash;
 
       if ($target.length) {
         if (!$target.get(0).hasAttribute('tabindex')) {
@@ -64,7 +64,9 @@
             .on('blur.anchorlink', _removeJSAttributes($target));
         }
 
-        window.location.hash = target;
+        if (!change_url_hash) {
+          window.location.hash = target;
+        }
 
         settings.before_scroll.call(this);
 
