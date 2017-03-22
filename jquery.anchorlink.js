@@ -11,7 +11,6 @@
         timer : 500,
         scroll_to_hash_on_load : true,
         offset_top : 0,
-        write_history_entry : true,
         destination_class : 'js-focus',
         before_scroll: function() {},
         after_scroll : function() {}
@@ -44,14 +43,6 @@
 
         _scrollTo(window.location.hash, false);
       }
-
-      if (write_history_entry) {
-        $(window).on('popstate.anchorlink', function() {
-          if (history.state !== null) {
-            _scrollTo(history.state, false);
-          }
-        });
-      }
     }
 
     /**
@@ -73,9 +64,7 @@
             .on('blur.anchorlink', _removeJSAttributes($target));
         }
 
-        if (settings.write_history_entry && history_entry && typeof history.pushState === 'function') {
-          history.pushState(target, "", target);
-        }
+        window.location.hash = target;
 
         settings.before_scroll.call(this);
 
