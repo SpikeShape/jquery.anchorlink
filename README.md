@@ -4,7 +4,7 @@ A JavaScript library to handle JavaScript scrolling when clicking on internal an
 
 ## Ho to use
 ```javascript
-$('a[href^="#"][href=!"#"]').anchorlink({
+$('a[href^="#"][href!="#"]').anchorlink({
   timer : 500,
   scroll_to_hash_on_load : true,
   offset_top : 0,
