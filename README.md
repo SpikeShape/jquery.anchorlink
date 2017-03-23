@@ -15,9 +15,11 @@ $('a[href^="#"][href!="#"]').anchorlink({
 ```
 
 ## Options
-- `timer` - scroll time in ms
-- `scrollOnLoad` - scroll to hash in URL
-- `offsetTop` - offset between scroll destination and top of the screen. `< 0` before destination; `> 0` after destination
-- `focusClass` - class that is added to thee scroll destination; usable to remove unwanted browser focus styles
-- `beforeScroll` - function the call before the scroll calculation and animation is started
-- `afterScroll` - function the call after the scroll animation is done
+| Name                | Default        | Description                       |
+|---------------------|----------------|-------------------------------------------------------------------------------------------------|
+| timer               | 500            | scroll time in ms               |
+| scrollOnLoad        | true           | scroll to hash in URL when loading the page |
+| offsetTop           | 0              | offset between scroll destination and top of the screen in px. `< 0` before destination; `> 0` after destination   |
+| focusClass          | 'js-focus'     | class that is added to thee scroll destination; usable to remove unwanted browser focus styles   |
+| beforeScroll        | function() {}  | function to be executed before the scroll calculation and animation is started   |
+| afterScroll         | function() {}  | function to be executed after the scroll animation is done   |
