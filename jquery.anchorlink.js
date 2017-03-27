@@ -65,7 +65,7 @@
             .on('blur.anchorlink', _removeJSAttributes($target));
         }
 
-        if (!change_url_hash) {
+        if (change_url_hash) {
           window.location.hash = target;
         }
 
