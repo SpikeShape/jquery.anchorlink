@@ -33,7 +33,7 @@
     function bindEvents() {
       self.on('click.anchorlink', function(event) {
         event.preventDefault();
-        scrollTo($(this).attr('href'));
+        scrollTo($(this));
       });
 
       if (settings.scrollOnLoad && window.location.hash) {
@@ -51,8 +51,9 @@
      * @function scrollTo
      * @private
      */
-    function scrollTo(target, change_url_hash) {
+    function scrollTo($clicked_anchor, change_url_hash) {
       var
+      target = $clicked_anchor.attr('href'),
       $target = $(target);
 
       change_url_hash = (typeof change_url_hash === 'undefined') ? true : change_url_hash;
@@ -69,7 +70,7 @@
           window.location.hash = target;
         }
 
-        settings.beforeScroll.call(this);
+        settings.beforeScroll.call($clicked_anchor);
 
         $body_html.on(scroll_stop_event, function(){
           $body_html.stop(); // prevent jittering scroll when scrolling manually during animation
@@ -79,7 +80,7 @@
           scrollTop: ($target.offset().top + settings.offsetTop)
         }, settings.timer)
           .promise().then(function() {
-            settings.afterScroll.call(this);
+            settings.afterScroll.call($clicked_anchor);
             $body_html.off(scroll_stop_event);
           });
 
