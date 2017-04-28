@@ -5,7 +5,7 @@
   $.fn.anchorlink = function(options) {
     var self = this,
         $body_html = $('html, body'),
-        scroll_stop_event = 'scroll.anchorlink mousedown.anchorlink wheel.anchorlink DOMMouseScroll.anchorlink mousewheel.anchorlink keyup.anchorlink touchmove.anchorlink',
+        scroll_stop_event = 'scroll.anchorlink mousedown.anchorlink wheel.anchorlink DOMMouseScroll.anchorlink mousewheel.anchorlink touchmove.anchorlink',
         history_support = /*history.replaceState ? true : */false,
         settings = $.extend({
         // These are the defaults.
@@ -64,8 +64,7 @@
         if (!$target.get(0).hasAttribute('tabindex')) {
           $target
             .attr('tabindex', '-1')
-            .addClass(settings.focusClass)
-            .on('blur.anchorlink', _removeJSAttributes($target));
+            .addClass(settings.focusClass);
         }
 
         if (settings.setUrlHash && change_url_hash && history_support) {
@@ -86,7 +85,7 @@
             $body_html.off(scroll_stop_event);
           });
 
-        $target.focus();
+        $target.focus().on('blur.anchorlink', _removeJSAttributes($target));
       }
     }
 
