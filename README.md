@@ -2,7 +2,7 @@
 
 A JavaScript library to handle JavaScript scrolling when clicking on internal anchors incl. URL updates. It also moves the focus to the link destination to assure keyboard navigation.
 
-## Ho to use
+## How to use
 ```javascript
 $('a[href^="#"][href!="#"]').anchorlink({
   timer : 500,
