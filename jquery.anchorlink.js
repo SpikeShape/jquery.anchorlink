@@ -6,12 +6,14 @@
     var self = this,
         $body_html = $('html, body'),
         scroll_stop_event = 'scroll.anchorlink mousedown.anchorlink wheel.anchorlink DOMMouseScroll.anchorlink mousewheel.anchorlink keyup.anchorlink touchmove.anchorlink',
+        history_support = /*history.replaceState ? true : */false,
         settings = $.extend({
         // These are the defaults.
         timer : 500,
         scrollOnLoad : true,
         offsetTop : 0,
         focusClass : 'js-focus',
+        setUrlHash : true,
         beforeScroll: function() {},
         afterScroll : function() {}
       }, options );
@@ -66,8 +68,8 @@
             .on('blur.anchorlink', _removeJSAttributes($target));
         }
 
-        if (change_url_hash) {
-          window.location.hash = target;
+        if (settings.setUrlHash && change_url_hash && history_support) {
+          history.replaceState(null, document.title, target);
         }
 
         settings.beforeScroll.call($clicked_anchor);
