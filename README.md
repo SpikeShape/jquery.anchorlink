@@ -5,6 +5,7 @@ A JavaScript library to handle JavaScript scrolling when clicking on internal an
 ## How to use
 ```javascript
 $('a[href^="#"][href!="#"]').anchorlink({
+  scrollStopEvent: 'scroll.anchorlink mousedown.anchorlink wheel.anchorlink DOMMouseScroll.anchorlink mousewheel.anchorlink',
   timer : 500,
   scrollOnLoad : true,
   offsetTop : 0,
