@@ -17,6 +17,7 @@ $('a[href^="#"][href!="#"]').anchorlink({
 ## Options
 | Name                | Default        | Description                       |
 |---------------------|----------------|-------------------------------------------------------------------------------------------------|
+| scrollStopEvent     | scroll.anchorlink mousedown.anchorlink wheel.anchorlink DOMMouseScroll.anchorlink mousewheel.anchorlink            | events to listen to while scrolling to abort the scroll animation               |
 | timer               | 500            | scroll time in ms               |
 | scrollOnLoad        | true           | scroll to hash in URL when loading the page |
 | offsetTop           | 0              | offset between scroll destination and top of the screen in px. `< 0` before destination; `> 0` after destination   |

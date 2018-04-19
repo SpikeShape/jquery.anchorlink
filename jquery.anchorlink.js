@@ -5,9 +5,9 @@
   $.fn.anchorlink = function(options) {
     var self = this,
         $body_html = $('html, body'),
-        scroll_stop_event = 'scroll.anchorlink mousedown.anchorlink wheel.anchorlink DOMMouseScroll.anchorlink mousewheel.anchorlink touchmove.anchorlink',
         settings = $.extend({
-        // These are the defaults.
+          // These are the defaults.
+        scrollStopEvent: 'scroll.anchorlink mousedown.anchorlink wheel.anchorlink DOMMouseScroll.anchorlink mousewheel.anchorlink',
         timer : 500,
         scrollOnLoad : true,
         offsetTop : 0,
@@ -71,7 +71,7 @@
 
         settings.beforeScroll.call($clicked_anchor);
 
-        $body_html.on(scroll_stop_event, function(){
+        $body_html.on(settings.scroll_stop_event, function(){
           $body_html.stop(); // prevent jittering scroll when scrolling manually during animation
         });
 
@@ -80,7 +80,7 @@
         }, settings.timer)
           .promise().then(function() {
             settings.afterScroll.call($clicked_anchor);
-            $body_html.off(scroll_stop_event);
+            $body_html.off(settings.scroll_stop_event);
           });
 
         $target.focus().on('blur.anchorlink', _removeJSAttributes($target));
