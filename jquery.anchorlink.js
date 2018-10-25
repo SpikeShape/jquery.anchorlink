@@ -31,10 +31,6 @@
      * @private
      */
     function bindEvents() {
-      $(window).on('scroll-to', function(event, destination) {
-        scrollTo(destination, false);
-      });
-
       self.on('click.anchorlink', function(event) {
         event.preventDefault();
         var destination = $(this).attr('href');
