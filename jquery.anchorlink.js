@@ -58,7 +58,11 @@
      */
     function scrollTo(target, change_url_hash) {
       var
-      $target = $(target);
+      $target = $(target),
+      offset_top =  typeof settings.offsetTop === 'function' ? settings.offsetTop.call(self) :
+                    typeof settings.offsetTop === 'number' ? settings.offsetTop : 0;
+
+      offset_top = typeof offset_top === 'number' ? offset_top : 0;
 
       change_url_hash = (typeof change_url_hash === 'undefined') ? true : change_url_hash;
 
@@ -80,7 +84,7 @@
         });
 
         $body_html.stop(false, false).animate({
-          scrollTop: ($target.offset().top + settings.offset_top)
+          scrollTop: ($target.offset().top + offset_top)
         }, settings.timer)
           .promise().then(function() {
             settings.afterScroll.call();
