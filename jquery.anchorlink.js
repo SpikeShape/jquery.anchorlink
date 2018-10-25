@@ -35,7 +35,8 @@
     function bindEvents() {
       self.on('click.anchorlink', function(event) {
         event.preventDefault();
-        scrollTo($(this));
+        var destination = $(this).attr('href');
+        scrollTo(destination, false);
       });
 
       if (settings.scrollOnLoad && window.location.hash) {
@@ -53,10 +54,13 @@
      * @function scrollTo
      * @private
      */
-    function scrollTo($clicked_anchor, change_url_hash) {
+    function scrollTo(target, change_url_hash) {
       var
-      target = $clicked_anchor.attr('href'),
-      $target = $(target);
+      $target = $(target),
+      offset_top =  typeof settings.offsetTop === 'function' ? settings.offsetTop.call(self) :
+                    typeof settings.offsetTop === 'number' ? settings.offsetTop : 0;
+
+      offset_top = typeof offset_top === 'number' ? offset_top : 0;
 
       change_url_hash = (typeof change_url_hash === 'undefined') ? true : change_url_hash;
 
@@ -71,21 +75,20 @@
           history.replaceState(null, document.title, target);
         }
 
-        settings.beforeScroll.call($clicked_anchor);
+        settings.beforeScroll.call();
 
         $body_html.on(scroll_stop_event, function(){
           $body_html.stop(); // prevent jittering scroll when scrolling manually during animation
         });
 
         $body_html.stop(false, false).animate({
-          scrollTop: ($target.offset().top + settings.offsetTop)
+          scrollTop: ($target.offset().top + offset_top)
         }, settings.timer)
           .promise().then(function() {
-            settings.afterScroll.call($clicked_anchor);
+            settings.afterScroll.call();
             $body_html.off(scroll_stop_event);
+            $target.focus().on('blur.anchorlink', _removeJSAttributes($target));
           });
-
-        $target.focus().on('blur.anchorlink', _removeJSAttributes($target));
       }
     }
 
