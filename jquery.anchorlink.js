@@ -5,9 +5,9 @@
   $.fn.anchorlink = function(options) {
     var self = this,
         $body_html = $('html, body'),
+        scroll_stop_event = 'scroll.anchorlink mousedown.anchorlink wheel.anchorlink DOMMouseScroll.anchorlink mousewheel.anchorlink touchmove.anchorlink',
         settings = $.extend({
-          // These are the defaults.
-        scrollStopEvent: 'scroll.anchorlink mousedown.anchorlink wheel.anchorlink DOMMouseScroll.anchorlink mousewheel.anchorlink',
+        // These are the defaults.
         timer : 500,
         scrollOnLoad : true,
         offsetTop : 0,
@@ -31,9 +31,14 @@
      * @private
      */
     function bindEvents() {
+      $(window).on('scroll-to', function(event, destination) {
+        scrollTo(destination, false);
+      });
+
       self.on('click.anchorlink', function(event) {
         event.preventDefault();
-        scrollTo($(this));
+        var destination = $(this).attr('href');
+        scrollTo(destination, false);
       });
 
       if (settings.scrollOnLoad && window.location.hash) {
@@ -51,9 +56,8 @@
      * @function scrollTo
      * @private
      */
-    function scrollTo($clicked_anchor, change_url_hash) {
+    function scrollTo(target, change_url_hash) {
       var
-      target = $clicked_anchor.attr('href'),
       $target = $(target);
 
       change_url_hash = (typeof change_url_hash === 'undefined') ? true : change_url_hash;
@@ -69,21 +73,20 @@
           window.location.hash = target;
         }
 
-        settings.beforeScroll.call($clicked_anchor);
+        settings.beforeScroll.call();
 
-        $body_html.on(settings.scroll_stop_event, function(){
+        $body_html.on(scroll_stop_event, function(){
           $body_html.stop(); // prevent jittering scroll when scrolling manually during animation
         });
 
         $body_html.stop(false, false).animate({
-          scrollTop: ($target.offset().top + settings.offsetTop)
+          scrollTop: ($target.offset().top + settings.offset_top)
         }, settings.timer)
           .promise().then(function() {
-            settings.afterScroll.call($clicked_anchor);
-            $body_html.off(settings.scroll_stop_event);
+            settings.afterScroll.call();
+            $body_html.off(scroll_stop_event);
+            $target.focus().on('blur.anchorlink', _removeJSAttributes($target));
           });
-
-        $target.focus().on('blur.anchorlink', _removeJSAttributes($target));
       }
     }
 
